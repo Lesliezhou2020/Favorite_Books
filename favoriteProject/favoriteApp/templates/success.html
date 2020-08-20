@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success</title>
+</head>
+<body>
+    <div id = "header">
+        <p>Welcome, {{ user.first_name }} !</p>
+        <a href="/logout">Log out</a>
+    </div>
+    <div id="container">
+        {% if messages %}
+        <ul class="messages">    
+            {% for message in messages %}    
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form action="/create" method="post"> 
+            {% csrf_token%}
+            <h2>Add a Favorite Book</h2>
+            <p>
+                <label for="title">Title</label><input type="text" name="title"/>
+            </p>
+            <p>
+                <label for="desc">Description</label><input type="text" name="desc"/>
+            </p>
+            <button id="small_button" type="submit">Add</button>   
+        </form>
+
+        <h2>All Books</h2>
+        {% for book in all_books %}
+            <a href ="/books/{{ book.id }}">{{ book.title }}</a>
+            <p>(added by {{ book.uploaded_by.last_name }} {{ book.uploaded_by.first_name }})</p>
+            {% if book.id in favorite_book_ids %}   
+                <p>this is one of your favorites</p>
+            {% else %}
+                <a href="/books/{{book.id}}/favorite">Add to Favorites</a>
+            {% endif %}
+        {% endfor%}
+
+
+
+    <div>
+
+    </div>
+</body>
+</html>
